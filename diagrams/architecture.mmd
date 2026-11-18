@@ -1,0 +1,21 @@
+flowchart LR
+    Visitors["Web visitors"] -->|HTTPS| Web
+    Players["Minecraft players"] -->|Game traffic| Game
+    subgraph PC["Owner's Windows PC"]
+        Operator["Administrator"]
+        Job["Scheduled backup job"]
+        Repo["Encrypted restic repository"]
+    end
+    subgraph VM["OCI A1 VM - Ubuntu ARM64"]
+        Web["Caddy website"]
+        Game["Minecraft + NeoForge + Chunky"]
+        Admin["OpenSSH and 1Panel"]
+        Snapshot["Snapshot job on boot disk"]
+        Web --> Snapshot
+        Game --> Snapshot
+        Admin -->|Panel and host state| Snapshot
+    end
+    Operator -->|Tailscale| Admin
+    Job -->|Request snapshot over private SSH| Snapshot
+    Snapshot -->|Stream archive| Job
+    Job -->|Store and verify| Repo

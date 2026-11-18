@@ -1,0 +1,38 @@
+name: portfolio-web-example
+
+services:
+  website:
+    image: caddy:2-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
+    platform: linux/arm64
+    restart: unless-stopped
+    user: "1000:1000"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: "0"
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+    volumes:
+      - ./config:/etc/caddy:ro
+      - ./site:/srv/site:ro
+      - ./data:/data
+      - ./runtime-config:/config
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    mem_limit: 128m
+    memswap_limit: 128m
+    cpus: "0.50"
+    pids_limit: 64
+    healthcheck:
+      test: [CMD, wget, -q, --spider, http://localhost/]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"

@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "language": "en",
+  "continueOnRestart": true,
+  "forceLoadExistingChunks": false,
+  "silent": false,
+  "updateInterval": 30,
+  "playerPauseCount": 1
+}

@@ -1,0 +1,32 @@
+{
+	admin localhost:2019
+	servers {
+		protocols h1 h2
+	}
+}
+
+(static_site) {
+	root * /srv/site
+	encode zstd gzip
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+	@assets path /assets/* /favicon.svg
+	header @assets Cache-Control "public, max-age=86400"
+	@development not path /assets/* /favicon.svg /development.css
+	header @development Cache-Control "no-store"
+	rewrite @development /development.html
+	file_server {
+		hide README.txt
+	}
+}
+
+site.example.invalid, www.site.example.invalid {
+	import static_site
+}
+
+:80 {
+	import static_site
+}
