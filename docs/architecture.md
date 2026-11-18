@@ -20,7 +20,7 @@ One OCI Ampere A1 VM hosts the website and the game. Each has its own Compose pr
 3. The owner's PC reaches key-based SSH and the panel through Tailscale. Public administrative connections were blocked during review.
 4. The scheduled PC job requests a consistent snapshot through a dedicated restricted key. Services recover before transfer to the encrypted local repository.
 
-The site serves a static landing page and assets directly from disk. The SQLite databases in the backup belong to 1Panel.
+Caddy serves the print store’s landing page and assets directly from disk while the storefront is in development. The SQLite databases in the backup belong to 1Panel.
 
 ## Persistence and resource limits
 
